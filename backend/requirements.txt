@@ -1,3 +1,6 @@
 fastapi[standard]>=0.141,<0.142
 pyodbc>=5.3,<6
 ruff
+bcrypt
+pyjwt
+pytest
