@@ -7,8 +7,8 @@ load_dotenv()
 
 CONN_STR = (
     "DRIVER={ODBC Driver 17 for SQL Server};"
-    f"SERVER={os.getenv('DB_SERVER', 'localhost')};"
-    f"DATABASE={os.getenv('DB_NAME', 'python')};"
+    f"SERVER={os.getenv('DB_SERVER') or 'localhost'};"
+    f"DATABASE={os.getenv('DB_NAME') or 'python'};"
     "Trusted_Connection=yes;"
     "Encrypt=no;"
 )

@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { startNewGame, submitGuess, type NewGameResponse, type GuessResponse } from './api'
+import { startNewGame, submitGuess, type NewGameResponse, type GuessResponse } from '../api'
 
 type Status = 'idle' | 'playing' | 'won' | 'lost'
 
@@ -39,7 +39,7 @@ export default function GuessGame() {
     try {
       const res = await submitGuess(game.game_id, value)
       setLastResult(res)
-      setHistory((h) => [...h, `${value} -> ${res.result}`])
+      setHistory((h) => [`${value} → ${res.result}`, ...h])
       setGuessValue('')
       if (res.result === 'correct') setStatus('won')
       else if (res.result === 'out_of_attempts') setStatus('lost')
@@ -51,56 +51,70 @@ export default function GuessGame() {
   const attemptsRemaining = lastResult ? lastResult.attempts_remaining : game?.max_attempts
 
   return (
-    <main style={{ maxWidth: 420, margin: '48px auto', fontFamily: 'system-ui', textAlign: 'center' }}>
+    <section className="game-panel">
       <h1>Number Guessing Game</h1>
 
-      {status === 'idle' && <button onClick={handleStart}>Start game</button>}
+      {status === 'idle' && (
+        <>
+          <p className="muted">Guess a number between 1 and 100 in as few tries as you can.</p>
+          <button className="btn btn-primary" onClick={handleStart}>
+            Start game
+          </button>
+        </>
+      )}
 
       {game && status === 'playing' && (
         <>
-          <p>{game.message}</p>
-          <p>Attempts left: {attemptsRemaining}</p>
-          <form onSubmit={handleGuess}>
+          <p className="attempts-badge">Attempts left: {attemptsRemaining}</p>
+          <form className="guess-form" onSubmit={handleGuess}>
             <input
+              className="guess-input"
               type="number"
               value={guessValue}
               onChange={(e) => setGuessValue(e.target.value)}
               min={game.low}
               max={game.high}
+              placeholder={`${game.low}-${game.high}`}
               autoFocus
             />
-            <button type="submit">Guess</button>
+            <button className="btn btn-primary" type="submit">
+              Guess
+            </button>
           </form>
           {lastResult && (
-            <p>{lastResult.result === 'higher' ? 'Go higher!' : 'Go lower!'}</p>
+            <p className="hint">{lastResult.result === 'higher' ? '⬆ Go higher!' : '⬇ Go lower!'}</p>
           )}
         </>
       )}
 
       {status === 'won' && lastResult && (
-        <>
+        <div className="result result-success">
           <p>Correct! The number was {lastResult.target}.</p>
-          <p>Score: {lastResult.score}</p>
-          <button onClick={handleStart}>Play again</button>
-        </>
+          <p className="score">Score: {lastResult.score}</p>
+          <button className="btn btn-primary" onClick={handleStart}>
+            Play again
+          </button>
+        </div>
       )}
 
       {status === 'lost' && lastResult && (
-        <>
+        <div className="result result-danger">
           <p>Out of attempts. The number was {lastResult.target}.</p>
-          <button onClick={handleStart}>Try again</button>
-        </>
+          <button className="btn btn-primary" onClick={handleStart}>
+            Try again
+          </button>
+        </div>
       )}
 
-      {error && <p style={{ color: 'crimson' }}>{error}</p>}
+      {error && <p className="error-text">{error}</p>}
 
       {history.length > 0 && (
-        <ul style={{ textAlign: 'left', listStyle: 'none', padding: 0, marginTop: 24 }}>
+        <ul className="history-list">
           {history.map((entry, i) => (
             <li key={i}>{entry}</li>
           ))}
         </ul>
       )}
-    </main>
+    </section>
   )
 }

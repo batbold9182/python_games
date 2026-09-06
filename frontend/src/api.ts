@@ -1,4 +1,4 @@
-const API_BASE = 'http://127.0.0.1:8000'
+const api = import.meta.env.VITE_API_BASE as string
 
 export interface NewGameResponse {
   game_id: string
@@ -24,13 +24,13 @@ async function readError(res: Response): Promise<string> {
 }
 
 export async function startNewGame(): Promise<NewGameResponse> {
-  const res = await fetch(`${API_BASE}/guess/new`, { method: 'POST' })
+  const res = await fetch(`${api}/guess/new`, { method: 'POST' })
   if (!res.ok) throw new Error(await readError(res))
   return res.json()
 }
 
 export async function submitGuess(gameId: string, value: number): Promise<GuessResponse> {
-  const res = await fetch(`${API_BASE}/guess/${gameId}`, {
+  const res = await fetch(`${api}/guess/${gameId}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ value }),

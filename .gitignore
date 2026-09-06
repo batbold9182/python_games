@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 .venv/
 CODE_REVIEW.MD
+plan.md
