@@ -35,7 +35,7 @@ def test_access_token_roundtrips():
 
 
 def test_decode_rejects_garbage_token():
-    with pytest.raises(Exception):
+    with pytest.raises(Exception, match="Invalid token"):
         decode_access_token("not.a.real.token")
 
 

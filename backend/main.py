@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from database.database import get_connection
-from routers import guess
+from routers import auth, guess, users
 
 app = FastAPI()
 
@@ -15,6 +15,8 @@ cors = {
 
 app.add_middleware(CORSMiddleware, **cors)
 
+app.include_router(auth.router)
+app.include_router(users.router)
 app.include_router(guess.router)
 
 

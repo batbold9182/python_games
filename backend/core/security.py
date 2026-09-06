@@ -1,10 +1,11 @@
+import hashlib
 import os
 import secrets
-import hashlib
 from datetime import datetime, timedelta, timezone
-import bcrypt 
-from dotenv import load_dotenv
+
+import bcrypt
 import jwt
+from dotenv import load_dotenv
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -32,9 +33,9 @@ def decode_access_token(token:str) -> dict:
             raise jwt.InvalidTokenError("Invalid token type")
         return payload
     except jwt.ExpiredSignatureError:
-        raise Exception("Token has expired")
+        raise Exception("Token has expired") from None
     except jwt.InvalidTokenError as e:
-        raise Exception(f"Invalid token: {str(e)}")
+        raise Exception(f"Invalid token: {e}") from e
 
 def new_refresh_token() -> tuple[str,str, datetime]:
     raw = secrets.token_urlsafe(32)
