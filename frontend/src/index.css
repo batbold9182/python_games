@@ -71,12 +71,43 @@ h1 {
   text-align: center;
 }
 
+/* Auth */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.auth-form input {
+  font: inherit;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.auth-form input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
 /* Hub */
 
 .hub {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.hub-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-dim);
 }
 
 .game-list {

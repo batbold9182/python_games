@@ -4,6 +4,7 @@ import SnakeScreen from './Snake.Screen'
 import TetrisScreen from './Tetris.Screen'
 import PokerScreen from './Poker.Screen'
 import ChessScreen from './Chess.Screen'
+import { useAuth } from '../auth/useAuth'
 
 interface GameEntry {
   id: 'guess' | 'snake' | 'chess' | 'poker' | 'tetris'
@@ -55,6 +56,7 @@ type ScreenId = 'main' | GameEntry['id']
 
 export default function MainScreen() {
   const [screen, setScreen] = useState<ScreenId>('main')
+  const { user, logout } = useAuth()
 
   if (screen === 'guess') return <GuessScreen onBack={() => setScreen('main')} />
   if (screen === 'snake') return <SnakeScreen onBack={() => setScreen('main')} />
@@ -64,6 +66,15 @@ export default function MainScreen() {
 
   return (
     <div className="hub">
+      <div className="hub-header">
+        <span>
+          {user?.username} · {user?.points ?? 0} pts
+        </span>
+        <button className="back-button" onClick={logout}>
+          Sign out
+        </button>
+      </div>
+
       <div>
         <h1>Game Hub</h1>
         <p className="muted">Pick a game to play</p>
